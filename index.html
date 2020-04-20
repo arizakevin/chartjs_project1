@@ -76,58 +76,33 @@
 			});
 		}
 
-
-		
 		// Data from: https://data.giss.nasa.gov/gistemp/
-		// Mean from: 
-
 		async function getData() {
 			const xs = [];
 			const ysZ = [];
 			const ysN = [];
 			const ysS = [];
 			const ysG = [];
-
-			const responseZ =  await fetch('ZonAnn.Ts+dSST.csv');
-			const dataZ = await responseZ.text();
-			const tableZ = dataZ.split('\n').slice(1);
-
-			const responseN =  await fetch('NH.Ts+dSST.csv');
-			const dataN = await responseN.text();
-			const tableN = dataN.split('\n').slice(1);
-
-			const responseS =  await fetch('SH.Ts+dSST.csv');
-			const dataS = await responseS.text();
-			const tableS = dataS.split('\n').slice(1);
-
-			const responseG =  await fetch('GLB.Ts+dSST.csv');
-			const dataG = await responseG.text();
-			const tableG = dataG.split('\n').slice(1);
-
-			tableZ.forEach(row => {
-				const columns = row.split(',');
-				const year = columns[0];
-				xs.push(year);
-				const temp = columns[1];
-				ysZ.push(parseFloat(temp) + 14);
-				console.log(year, temp);
-			});
-			tableN.forEach(row => {
-				const columns = row.split(',');
-				const temp = columns[1];
-				ysN.push(parseFloat(temp) + 14);
-			});
-			tableS.forEach(row => {
-				const columns = row.split(',');
-				const temp = columns[1];
-				ysS.push(parseFloat(temp) + 14);
-			});
-			tableG.forEach(row => {
-				const columns = row.split(',');
-				const temp = columns[1];
-				ysG.push(parseFloat(temp) + 14);
-			});
+			await extractData('ZonAnn.Ts+dSST.csv',ysZ,xs);
+			await extractData('NH.Ts+dSST.csv',ysN);
+			await extractData('SH.Ts+dSST.csv',ysS);
+			await extractData('GLB.Ts+dSST.csv',ysG);
 			return { xs, ysZ, ysN, ysS, ysG };
+		}
+
+		async function extractData(url, y, x){
+			const response =  await fetch(url);
+			const data = await response.text();
+			const table = data.split('\n').slice(1);
+			table.forEach(row => {
+				const columns = row.split(',');
+				const temp = columns[1];
+				y.push(parseFloat(temp) + 14);
+				if (x) {
+					const year = columns[0];
+					x.push(year);
+				}
+			});
 		}
 	</script>
 </body>
