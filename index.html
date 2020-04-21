@@ -6,6 +6,13 @@
 	<meta http-eqiv="X-UA-Compatible" content="ie-edge" />	
 	<title>Fetch and Graph CSV with Chart.js</title>
 	<style>
+		canvas {
+			text-align: center;
+			justify-content: center;
+			margin-left: 10%;
+			max-width: 80%;
+		}
+
 		h1 {
 			color: rgba(255, 70, 70, 1);
 			text-align: center;
@@ -71,7 +78,14 @@
     			                }
     			            }
     			        }]
-    			    }
+    			    },
+    			    legend: {
+        			    display: true,
+        			    position: 'bottom',
+        			    labels: {
+        			        fontColor: 'rgb(255, 99, 132)'
+        			    }
+        			}
     			}
 			});
 		}
